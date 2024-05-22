@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Sign Up Form by Colorlib</title>
+  <style>
+    .error {
+      border-color: red;
+    }
+    .no-error {
+      border-color: white;
+    }
+    .error-message {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>Booking place for your dinner!</h2>
+
+  <div>
+    <label for="name" class="form-label">Name: </label>
+    <input type="text" id="name" placeholder="Enter your name" onblur="validateName()" />
+    <span id="name-error" class="error-message"></span>
+  </div>
+  <div>
+    <label for="phone" class="form-label">Phone number</label>
+    <input type="text" id="phone" placeholder="Enter your 6-digit phone number" onblur="validatePhone()" />
+    <span id="phone-error" class="error-message"></span>
+  </div>
+  <br>
+
+  <div>
+    <label>Select a time</label><br>
+    <input type="radio" value="05:00" name="program_time" id="five" checked />
+    <label for="five">05:00</label><br>
+    <input type="radio" value="06:00" name="program_time" id="six" />
+    <label for="six">06:00</label><br>
+    <input type="radio" value="07:00" name="program_time" id="seven" />
+    <label for="seven">07:00</label><br>
+    <input type="radio" value="08:00" name="program_time" id="eight" />
+    <label for="eight">08:00</label>
+  </div>
+  <br>
+
+  <label>What would you like to have with us?</label><br>
+  <input type="checkbox" name="food_item" id="item_starters" value="Starters" />
+  <label for="item_starters">Starters</label><br>
+  <input type="checkbox" name="food_item" id="item_main" value="Main_Course" />
+  <label for="item_main">Main Course</label><br>
+  <input type="checkbox" name="food_item" id="item_dessert" value="Desserts" />
+  <label for="item_dessert">Desserts</label><br>
+  <input type="checkbox" name="food_item" id="item_drink" value="Drinks" />
+  <label for="item_drink">Drinks</label><br><br>
+
+  <div>
+    <button onclick="Submit()" id="submit">Submit</button>
+    <label id="message">...</label>
+  </div>
+
+  <script>
+    function validateName() {
+      const nameInput = document.getElementById('name');
+      const nameError = document.getElementById('name-error');
+      const name = nameInput.value.trim();
+
+      if (!name) {
+        nameError.textContent = 'Error: Name is empty.';
+        nameInput.classList.add('error');
+        nameInput.classList.remove('no-error');
+        return false;
+      } else if (!/\s/.test(name)) {
+        nameError.textContent = 'Error: First and last names are required.';
+        nameInput.classList.add('error');
+        nameInput.classList.remove('no-error');
+        return false;
+      } else {
+        nameError.textContent = '';
+        nameInput.classList.remove('error');
+        nameInput.classList.add('no-error');
+        return true;
+      }
+    }
+
+    function validatePhone() {
+      const phoneInput = document.getElementById('phone');
+      const phoneError = document.getElementById('phone-error');
+      const phone = phoneInput.value.trim();
+
+      if (!phone) {
+        phoneError.textContent = 'Error: Phone number is empty.';
+        phoneInput.classList.add('error');
+        phoneInput.classList.remove('no-error');
+        return false;
+      } else if (phone.length !== 6) {
+        phoneError.textContent = 'Error: Phone numbers must have exactly 6 characters.';
+        phoneInput.classList.add('error');
+        phoneInput.classList.remove('no-error');
+        return false;
+      } else if (!/^\d/.test(phone)) {
+        phoneError.textContent = 'Error: Phone number must start with a number.';
+        phoneInput.classList.add('error');
+        phoneInput.classList.remove('no-error');
+        return false;
+      } else {
+        phoneError.textContent = '';
+        phoneInput.classList.remove('error');
+        phoneInput.classList.add('no-error');
+        return true;
+      }
+    }
+
+    function Submit() {
+      const isNameValid = validateName();
+      const isPhoneValid = validatePhone();
+
+      if (!isNameValid || !isPhoneValid) {
+        return;
+      }
+
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const programTime = document.querySelector('input[name="program_time"]:checked').value;
+      const foodItems = Array.from(document.querySelectorAll('input[name="food_item"]:checked')).map(checkbox => checkbox.value);
+      const message = document.getElementById('message');
+
+      if (foodItems.length === 0) {
+        message.textContent = 'Error: Please select at least one food item.';
+        return;
+      }
+
+      const foodList = foodItems.join(', ');
+
+      message.textContent = `Reservation for: ${name} phone: (${phone}), at ${programTime}. Starters are: ${foodList}.`;
+    }
+  </script>
+
+</body>
+
+</html>
